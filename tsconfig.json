@@ -1,0 +1,14 @@
+{
+    "include": ["index.ts", "solve.ts"],
+    "compilerOptions": {
+        "target": "es2019",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "strict": true,
+        "noEmit": true,
+        "lib": ["es5", "es2019", "dom", "dom.iterable"],
+        "typeRoots": [
+            "node_modules/@types"
+        ]
+    }
+}
