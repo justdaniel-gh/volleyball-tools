@@ -26,15 +26,19 @@ function get_val(selected: JQuery): number {
     return Number(val);
 }
 
-export async function calc_three_way_tie() {
-    $('#result').html("Solving... this can take a minute or two...");
-    let { Context } = await window.z3Promise;
-    let { Optimize, Int, And, Or, ToReal } = Context('main');
-
-    let teams: Team[] = [1, 2, 3].map((id) => ({ id: id, matches_played: 0, matches_won: 0, sets_won: 0, points_scored: 0, points_scored_against: 0, point_percentage: 0 }));
+function collect_teams_data(teams: Team[]) {
+    // Reset
+    teams.forEach((team) => {
+        team.matches_played = 0;
+        team.matches_won = 0;
+        team.sets_won = 0;
+        team.points_scored = 0;
+        team.points_scored_against = 0;
+        team.point_percentage = 0
+    });
 
     // Collect up matches, sets, and points
-    [1, 2].map((m) => {
+    [1, 2, 3].map((m) => {
         let sets_won = [1, 2, 3].map(s => {
             var t1 = get_val($("#t1_m" + m + "_s" + s));
             var t2 = get_val($("#t2_m" + m + "_s" + s));
@@ -87,8 +91,23 @@ export async function calc_three_way_tie() {
             sets_won[2].matches_won += 1;
         }
     });
+
     // Calculate pp
     teams.forEach((team) => { team.point_percentage = team.points_scored / team.points_scored_against });
+}
+
+export async function calc_three_way_tie() {
+    $('#result').html("Solving... this can take a minute or two...");
+    let { Context } = await window.z3Promise;
+    let { Optimize, Int, And, Or, ToReal } = Context('main');
+
+    let teams: Team[] = [1, 2, 3].map((id) => ({ id: id, matches_played: 0, matches_won: 0, sets_won: 0, points_scored: 0, points_scored_against: 0, point_percentage: 0 }));
+
+    collect_teams_data(teams);
+    $("#t1_pp").html(""+teams[0].point_percentage.toPrecision(6));
+    $("#t2_pp").html(""+teams[1].point_percentage.toPrecision(6));
+    $("#t3_pp").html(""+teams[2].point_percentage.toPrecision(6));
+
     console.log(teams);
 
     // Now, for game 3, we want to come up with a solution where it creates a tie on matches/sets and a certain team wins
@@ -115,7 +134,7 @@ export async function calc_three_way_tie() {
         a_team_s2_score.lt(40),
         b_team_s1_score.lt(40),
         b_team_s2_score.lt(40),
-    ))
+    ));
     // rules for winning a match
     solver.add(
         Or(
@@ -181,6 +200,8 @@ export async function calc_three_way_tie() {
     solver.minimize(a_team_s2_score);
     //solver.minimize(b_team_s1_score);
     //solver.minimize(b_team_s2_score);
+    
+    // Add in the specified values as concrete values
     if (!Number.isNaN(get_val($("#t1_m3_s1")))) {
         solver.add(a_team_s1_score.eq(get_val($("#t1_m3_s1"))));
     }
@@ -199,9 +220,10 @@ export async function calc_three_way_tie() {
     $('#t1_m3_s2').val('' + solver.model().get(a_team_s2_score));
     $('#t2_m3_s1').val('' + solver.model().get(b_team_s1_score));
     $('#t2_m3_s2').val('' + solver.model().get(b_team_s2_score));
-    
-    // TODO:....
-    //$("#t1_pp").html(""+teams[0].point_percentage);
-    //$("#t2_pp").html(""+teams[1].point_percentage);
-    //$("#t3_pp").html(""+teams[2].point_percentage);
+
+    // Display PP...
+    collect_teams_data(teams);
+    $("#t1_pp").html(""+teams[0].point_percentage.toPrecision(6));
+    $("#t2_pp").html(""+teams[1].point_percentage.toPrecision(6));
+    $("#t3_pp").html(""+teams[2].point_percentage.toPrecision(6));
 };
