@@ -32,7 +32,7 @@
     "webpack-dev-server": "^5.0.4"
   },
   "repository": {
-    "url": "git+https://github.com/justdaniel-gh/volleyball-tools.git",
-    "homepage": "http://justdaniel-gh.github.io/REPONAME"
+    "url": "git@github.com:justdaniel-gh/volleyball-tools.git",
+    "homepage": "https://justdaniel-gh.github.io/volleyball-tools"
   }
 }
