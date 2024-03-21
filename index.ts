@@ -261,6 +261,8 @@ export async function calc_three_way_tie() {
 
     let match_3_scores = await build_solve_match(context, solver, teams[0], teams[1], 3);
     // Only worry about minimizing these scores
+    solver.minimize(match_3_scores[0][0]);
+    solver.minimize(match_3_scores[1][0]);
     solver.minimize(match_3_scores[0][1]);
     solver.minimize(match_3_scores[1][1]);
     let match_3_team_1_scored_against = teams[1].z3_scores[2].filter(isArith).reduce((acc, cv) => acc.add(cv));
@@ -300,33 +302,19 @@ export async function calc_three_way_tie() {
         ).lt(0)
     ));
 
-    // Add in the specified values as concrete values
-    // FIXME: Can't specify a value for 3d match, because it's getting populated into points_scored/against and used above
     /*
-    if (!Number.isNaN(get_val($("#t1_m3_s1")))) {
-        solver.add(a_team_s1_score.eq(get_val($("#t1_m3_s1"))));
-    }
-    if (!Number.isNaN(get_val($("#t1_m3_s2")))) {
-        solver.add(a_team_s2_score.eq(get_val($("#t1_m3_s2"))));
-    }
-    if (!Number.isNaN(get_val($("#t2_m3_s1")))) {
-        solver.add(b_team_s1_score.eq(get_val($("#t2_m3_s1"))));
-    }
-    if (!Number.isNaN(get_val($("#t2_m3_s2")))) {
-        solver.add(b_team_s2_score.eq(get_val($("#t2_m3_s2"))));
-    }*/
-
     let output = '';
     for (const entry of solver.assertions().entries()) {
         output += '' + entry + '<br/>';
     }
     $('#assertions').html(output);
+    */
     if (await solver.check() == 'sat') {
         $('#t1_m3_s1').val('' + solver.model().get(teams[0].z3_scores[2][0] as z3.Arith<"main">));
         $('#t1_m3_s2').val('' + solver.model().get(teams[0].z3_scores[2][1] as z3.Arith<"main">));
         $('#t2_m3_s1').val('' + solver.model().get(teams[1].z3_scores[2][0] as z3.Arith<"main">));
         $('#t2_m3_s2').val('' + solver.model().get(teams[1].z3_scores[2][1] as z3.Arith<"main">)).trigger("change");
-        $('#result').html('' + solver.model());
+        //$('#result').html('' + solver.model());
     } else {
         $('#result').html('Unable to solve!');
     }
