@@ -12,6 +12,7 @@ import { create_team, update_pps } from "./team";
 import '../scss/styles.scss'
 
 // Import all of Bootstrap's JS
+// TODO: Maybe don't?
 import * as bootstrap from 'bootstrap'
 
 declare global {
