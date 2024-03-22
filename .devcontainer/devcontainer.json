@@ -22,6 +22,6 @@
 
 	"mounts": [
 		"source=${localEnv:GITHUB_ID_RSA},target=/home/node/.ssh/id_rsa,type=bind,consistency=cached",
-		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh/known_hosts,target=/home/node/.ssh/known_hosts,type=bind,consistency=cached",
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh/known_hosts,target=/home/node/.ssh/known_hosts,type=bind,consistency=cached"
 	]	
 }
