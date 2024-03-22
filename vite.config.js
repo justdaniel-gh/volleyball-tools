@@ -7,6 +7,7 @@ export default {
     emptyOutDir: true,
     outDir: '../dist'
   },
+  base: '/volleyball-tools/',
   server: {
     port: 8080
   }
