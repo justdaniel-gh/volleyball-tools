@@ -56,7 +56,7 @@ export function create_team(id: number, num_matches: number, num_sets: number): 
     range(num_matches, 1).forEach((m) => {
         range(num_sets, 1).forEach((s) => {
             let td = $("<td></td>");
-            let input = $("<input></input>").attr({ id: "t" + id + "_m" + m + "_s" + s, type: "text", size: "2" });
+            let input = $("<input></input>").attr({ id: "t" + id + "_m" + m + "_s" + s, type: "text", inputmode: "numeric", min: "0", max: "50", size: "1" });
             input.on("change", { team: team }, update_teams);
             td.append(input);
             row.append(td);
