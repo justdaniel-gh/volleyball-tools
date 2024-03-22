@@ -1,35 +1,25 @@
 {
   "private": true,
   "scripts": {
-    "copy-files": "mkdir -p dist && cp node_modules/z3-solver/build/z3-built.js node_modules/z3-solver/build/z3-built.wasm node_modules/z3-solver/build/z3-built.worker.js dist && cp src/ts/coi-serviceworker.js dist",
+    "copy-files": "cp node_modules/z3-solver/build/z3-built.js node_modules/z3-solver/build/z3-built.wasm node_modules/z3-solver/build/z3-built.worker.js src/public/",
     "check": "tsc",
-    "start": "webpack serve",
-    "bundle": "webpack --mode=development",
-    "build": "npm run check && npm run copy-files && npm run bundle",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "dev": "vite",
+    "build": "npm run copy-files && vite build",
+    "preview": "npm run copy-files && vite preview"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
-    "jquery": "^3.7.1",
+    "cash-dom": "^8.1.5",
     "z3-solver": "^4.9.1"
   },
   "devDependencies": {
     "@types/bootstrap": "^5.2.10",
-    "@types/jquery": "^3.5.29",
-    "autoprefixer": "^10.4.19",
-    "css-loader": "^6.10.0",
     "gh-pages": "^6.1.1",
-    "html-webpack-plugin": "^5.6.0",
-    "postcss-loader": "^8.1.1",
-    "sass": "^1.72.0",
-    "sass-loader": "^14.1.1",
-    "style-loader": "^3.3.4",
     "ts-loader": "^9.3.1",
     "typescript": "^4.7.4",
-    "webpack": "^5.91.0",
-    "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.0.4"
+    "vite": "^5.2.3"
   },
   "repository": {
     "url": "git@github.com:justdaniel-gh/volleyball-tools.git",

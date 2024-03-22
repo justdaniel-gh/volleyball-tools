@@ -161,3 +161,7 @@ dist
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/node,visualstudiocode
+
+### Custom Ignores
+# Ignore z3 in public, this will be copied from node_modules
+src/public/z3*
