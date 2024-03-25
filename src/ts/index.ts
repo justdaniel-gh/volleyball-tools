@@ -73,7 +73,7 @@ function create_table(num_matches: number, num_sets: number) {
         m_row.appendChild(th);
         range(num_sets, 1).forEach((s) => {
             let th = document.createElement("th");
-            th.innerText = "Set " + s;
+            th.innerText = "S" + s;
             s_row.appendChild(th);
         });
     });
